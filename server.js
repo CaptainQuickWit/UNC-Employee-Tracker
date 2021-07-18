@@ -19,23 +19,23 @@ const connection = mysql.createConnection({
   database: 'employee_db',
 });
 
-/**===================DELETE ME=========== */
+
 connection.connect((err) => {
     if (err) throw err;
-    runSearch();
-  });
+        execute();
+});
   
 
-const runSearch = () => {
+const execute = () => {
     inquirer
       .prompt({
         name: 'action',
         type: 'rawlist',
         message: 'What would you like to do?',
         choices: [
-          'View All Employees',
-          'View Employees by Department',
-          'View Employees by Role',
+          'View Department',
+          'View Role',
+          'View Employee',
           'Add Department',
           'Add Role',
           'Add Employee',
@@ -44,20 +44,20 @@ const runSearch = () => {
       })
       .then((answer) => {
         switch (answer.action) {
-          case 'View All Employees':
-            allEmployees();
+          case 'View Department':
+            viewDept();
             break;
   
-          case 'View Employees by Department':
-            departmentSearch();
+          case 'View Role':
+            viewRole();
             break;
   
-          case 'View Employees by Role':
-            roleSearch();
+          case 'View Employee':
+            viewEmp();
             break;
   
           case 'Add Department':
-            addDepartment();
+            addDept();
             break;
   
           case 'Add Role':
@@ -65,11 +65,11 @@ const runSearch = () => {
             break;
   
           case 'Add Employee':
-            addEmployee();
+            addEmp();
             break;
           
           case 'Update Employee':
-            updateEmployee();
+            updateEmp();
             break;
   
           default:
@@ -79,79 +79,25 @@ const runSearch = () => {
       });
   };
   
-  const allEmployees = () => {
-    const query = 
-    'SELECT first_name,last_name FROM employee';
-    connection.query(query, (err, res) => {
-      if (err) throw (err);
-      res.forEach(({ first_name, last_name}) =>
-      console.log(
-        `First Name: ${first_name} || Last Name: ${last_name}`
-        )
-      );
-      runSearch();
-    });
-  };
-  
-  const departmentSearch = () => {
-    inquirer
-      .prompt({
-        name:'department',
-        type: 'input'
-      })
-      .then((answer) => {
-        const query = 'SELECT first_name, last_name, '
-        //NEED TO JOIN TO GET INFO FROM OTHER TABLE FOR DEPARTMENT
-        connection.query(query, {})
+  function viewDept() {
 
-      }
-      );
-  };
-  
-  const roleSearch = () => {
-  
-  };
-  
-  const addDepartment = () => {
-    inquirer
-      .prompt([
-        {
-          name: 'addDepartment',
-          type: 'input',
-          message: 'What department would you like to add?',
-        }
-      .then((answer) => {
-        const query =
-        'INSERT INTO department(department_name) VALUES ?';
-        connection.query(query, [answer.addDepartment], (err, res) => {
-          if (err) throw err;
-          console.log(res);
-          runSearch();
-        })
-      })
-      ])
-  };
-  
-  const addRole = () => {
-    inquirer
-      .prompt([
-        {
-          name: 'addRole',
-          type: 'input',
-          message: 'What role would you like to add?',
-        }
-      .then((answer) => {
-        const query =
-        'INSERT INTO role(title) VALUES ?';
-        connection.query(query, [answer.addRole], (err, res) => {
-          if (err) throw (err);
-          console.log(res);
-          runSearch();
-        })
-      })
-      ])
-  
-  };
+  }
 
+  function viewRole() {
+  }
 
-/**===================DELETE ME=========== */
+  function viewEmp() {
+  }
+
+  function addDept() {
+  }
+
+  function addRole() {
+  }
+
+  function addEmp() {
+  } 
+
+  function updateEmp() {
+
+  }
