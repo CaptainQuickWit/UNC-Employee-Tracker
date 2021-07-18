@@ -1,4 +1,9 @@
 const mysql = require('mysql');
+const mysql = require("mysql");
+const inquirer = require("inquirer");
+const consoleTable = require("console.table");
+const app = express();
+
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -13,5 +18,7 @@ const connection = mysql.createConnection({
   password: 'qwertyuiop',
   database: 'employee_db',
 });
+
+
 
 
