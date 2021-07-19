@@ -257,17 +257,10 @@ function runQuery () {
        if (answer.addAnDept === "A" ||answer.addAnDept === "" ) {
             runQuery();
        } else {
-           /*
-        const query =
-        'INSERT INTO department(department) VALUES ?';
-        connection.query(query, [answer.addAnDept], (err, res) => {
-          if (err) throw err;
-          console.log(res);
-          
-        });*/
+
         connection.query(
             `INSERT INTO department (name)
-            VALUES ("${answer.addAnDept}")`, (err, res) => {
+             VALUES ("${answer.addAnDept}")`, (err, res) => {
                 if (err) throw err;
 
                 console.log(`\n ${answer.addAnDept} division has been added to company operations. DataBase technical info:\n `);
@@ -278,7 +271,7 @@ function runQuery () {
                 console.log(
                     `============================================`
                 );
-    });
+        });
 
        }
        runQuery();
@@ -288,6 +281,47 @@ function runQuery () {
   }
 
   function addRole() {
+
+    inquirer.prompt([
+        {
+            name: "title",
+            type: "input",
+            message: "Role title?",
+        },
+        {
+            name: "salary",
+            type: "input",
+            message: "Role compensation in U.S. Dollars?",
+            
+        },
+        {
+            name: "dept_id_FK",
+            type: "input",
+            message: "What department is this role in? Make sure to give the ID",
+            
+        }
+        ]).then((answer) => {
+            /*
+            connection.query(
+                `INSERT INTO department (name)
+                 VALUES ("${answer.addAnDept}")`, (err, res) => {*/
+            const query = `INSERT INTO job (dept_id_FK, title, salary) VALUES ("${answer.dept_id_FK}", "${answer.title}", "${answer.salary}")`;
+            connection.query(query, (err, res) => {
+                if (err) throw err; //here
+                if (err) {
+                    throw err;
+                } else {
+                    console.log(`\n ${answer.title} has been sucessfully added! \n `);
+                    console.table(res);
+                    console.log("New List of roles: ");
+                    viewRole();
+                    runQuery();
+
+                }
+                
+            });
+
+        })
 
   }
 
