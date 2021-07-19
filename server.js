@@ -20,13 +20,56 @@ const connection = mysql.createConnection({
 });
 
 
-connection.connect((err) => {
-    if (err) throw err;
+connection.connect((error) => {
+
+    if (error) {
+        throw error;
+    } else {
+        console.log(`SYSTEM: TCP handshake to port: 3306 completed`);
+        
         execute();
+    }
+
 });
   
+function reRun (runInput) {
+    
+    inquirer
+      .prompt({
+        name: 'action',
+        type: 'rawlist',
+        message: 'Would you like to run another query?',
+        choices: [
+          'Yes',
+          'No',
+        ],
+      })
+      .then((answer) => {
+        switch (answer.action) {
+          case 'Yes':
+            return true;
+            
+  
+          case 'No':
+            
+            return false;
+            
 
-const execute = () => {
+          default:
+            console.log(`Error: action: ${answer.action}`);
+            break;
+        }});
+
+}
+
+function execute () {
+    console.log("SYSTEM: starting up Application: UNC-Employee-Tracker");
+    runQuery();
+    
+}
+
+function runQuery () {
+    
     inquirer
       .prompt({
         name: 'action',
@@ -39,7 +82,8 @@ const execute = () => {
           'Add Department',
           'Add Role',
           'Add Employee',
-          'Update Employee'
+          'Update Employee',
+          'Exit'
         ],
       })
       .then((answer) => {
@@ -71,13 +115,27 @@ const execute = () => {
           case 'Update Employee':
             updateEmp();
             break;
+
+          case 'Exit':
+            console.log(`SYSTEM: terminating connnection to port: 3306`);
+            console.log("SYSTEM: terminating application: UNC-Employee-Tracker. Action: User Input.");
+            connection.end();
+            process.exit();
+            break;
   
           default:
-            console.log(`Invalid action: ${answer.action}`);
+            console.log(`An unknown error has occured: ${answer.action}. The system encountered an error 
+            user input registered does not match the list. Please escalate 
+            through normal escalation process`);
+            /**
+             * a made up reference code to the this issue should a ticket be submitted about a bug by an employee using the system.
+             */
+            console.log("STBT-3802");
             break;
         }
       });
-  };
+      
+  }
   
   function viewDept() {
 
@@ -87,7 +145,37 @@ const execute = () => {
   }
 
   function viewEmp() {
+    const query = 'SELECT first_name,last_name FROM employee';
+    connection.query(query, (err, res) => {
+
+      if (err) throw (err);
+      
+        console.log(
+        `============================================`
+        );
+        console.log(
+        `--------------Query: All employees----------`
+            );
+        console.log(
+        `============================================`
+        );
+      res.forEach(({ first_name, last_name}) => {
+        console.log(
+            `First Name: ${first_name}    Last Name: ${last_name}`
+            );
+        });
+
+        console.log(
+            `============================================`
+            );
+            console.log(
+                `============================================`
+            );
+    });
+
+
   }
+
 
   function addDept() {
   }
@@ -101,3 +189,4 @@ const execute = () => {
   function updateEmp() {
 
   }
+
