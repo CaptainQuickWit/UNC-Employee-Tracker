@@ -89,7 +89,9 @@ function runQuery () {
       .then((answer) => {
         switch (answer.action) {
           case 'View Department':
+            
             viewDept();
+            
             break;
   
           case 'View Role':
@@ -98,6 +100,7 @@ function runQuery () {
   
           case 'View Employee':
             viewEmp();
+
             break;
   
           case 'Add Department':
@@ -138,10 +141,66 @@ function runQuery () {
   }
   
   function viewDept() {
+    connection.query(
+        `SELECT * FROM department`, (err, res) => {
+            if (err) {
+                throw err;
+            } else {
+                console.log("  ");
+                console.log(
+                    `============================================`
+                );
+                console.log(
+                    `--------------Query: View Department---------`
+                );
+                console.log(
+                    `============================================`
+                );
+                console.table(res);
+                //console.log(res);
+                console.log(
+                    `============================================`
+                );
+                console.log(
+                        `============================================`
+                );
 
+            }
+        });
+
+        runQuery();
   }
 
   function viewRole() {
+    connection.query(
+        `SELECT * FROM job`, (err, res) => {
+            if (err) {
+                throw err;
+            } else {
+                console.log("  ");
+                console.log(
+                    `============================================`
+                );
+                console.log(
+                    `--------------Query: View Role--------------`
+                );
+                console.log(
+                    `============================================`
+                );
+                console.table(res);
+                //console.log(res);
+                console.log(
+                    `============================================`
+                );
+                console.log(
+                        `============================================`
+                );
+
+            }
+        });
+
+        runQuery();
+
   }
 
   function viewEmp() {
@@ -149,38 +208,87 @@ function runQuery () {
     connection.query(query, (err, res) => {
 
       if (err) throw (err);
-      
-        console.log(
-        `============================================`
-        );
-        console.log(
-        `--------------Query: All employees----------`
-            );
-        console.log(
-        `============================================`
-        );
-      res.forEach(({ first_name, last_name}) => {
-        console.log(
-            `First Name: ${first_name}    Last Name: ${last_name}`
-            );
-        });
-
+      if (err) {
+          throw err;
+      } else {
+        console.log("  ");
         console.log(
             `============================================`
             );
             console.log(
-                `============================================`
+            `--------------Query: All employees----------`
+                );
+            console.log(
+            `============================================`
             );
+          res.forEach(({ first_name, last_name}) => {
+          console.log(
+                `# First Name: ${first_name}    Last Name: ${last_name}`
+                );
+            });
+    
+            console.log(
+                `============================================`
+                );
+                console.log(
+                    `============================================`
+                );
+      }
+      
+        
     });
 
+    runQuery();
 
   }
 
 
-  function addDept() {
+  const addDept = () => {
+    inquirer
+    .prompt(
+      {
+        name: 'addAnDept',
+        type: 'input',
+        message: 'You are adding a department. If you want to (A)bort press A otherwise enter department name',
+      }
+    )
+    .then((answer) => {
+        //blank answers are treated the same as an Abort to make sure that this field does not remain blank
+       if (answer.addAnDept === "A" ||answer.addAnDept === "" ) {
+            runQuery();
+       } else {
+           /*
+        const query =
+        'INSERT INTO department(department) VALUES ?';
+        connection.query(query, [answer.addAnDept], (err, res) => {
+          if (err) throw err;
+          console.log(res);
+          
+        });*/
+        connection.query(
+            `INSERT INTO department (name)
+            VALUES ("${answer.addAnDept}")`, (err, res) => {
+                if (err) throw err;
+
+                console.log(`\n ${answer.addAnDept} division has been added to company operations. DataBase technical info:\n `);
+                console.log(
+                    `============================================`
+                );
+                console.table(res);
+                console.log(
+                    `============================================`
+                );
+    });
+
+       }
+       runQuery();
+      
+    });
+    
   }
 
   function addRole() {
+
   }
 
   function addEmp() {

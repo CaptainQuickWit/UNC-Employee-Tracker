@@ -49,7 +49,7 @@ VALUES ("In home technician", 20000);
 INSERT INTO job ( title, salary)
 VALUES ("Maintaince technician", 20000);
 INSERT INTO job ( title, salary)
-VALUES ("Headend technician", 25000);
+VALUES ("Hybrid Fiber Coaxial Technican", 25000);
 INSERT INTO job ( title, salary)
 VALUES ("Dispatch help desk", 15000);
 INSERT INTO job ( title, salary)
