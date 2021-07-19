@@ -1,4 +1,3 @@
-
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const consoleTable = require("console.table");
@@ -326,9 +325,56 @@ function runQuery () {
   }
 
   function addEmp() {
-  } 
+    inquirer.prompt([
+        {
+            name: "first",
+            type: "input",
+            message: "First Name?",
+        },
+        {
+            name: "last",
+            type: "input",
+            message: "Last Name?",
+            
+        },
+        {
+            name: "manager_id",
+            type: "input",
+            message: "whats the managers ID?",
+            
+        },
+        {
+            name: "job",
+            type: "input",
+            message: "what is the employee's job key? this will be used as the foreign key?",
+            
+        }
+        ]).then((answer) => {
+
+            const query = `INSERT INTO employee (job_id_FK, first_name, last_name, manager_id) VALUES ("${answer.job}", "${answer.first}", "${answer.last}", "${answer.manager_id}")`;
+            connection.query(query, (err, res) => {
+                if (err) throw err; //here
+                if (err) {
+                    throw err;
+                } else {
+                   
+                
+                    
+                    console.table(res);
+                    console.log("New List of employees: ");
+                    viewEmp();
+                    runQuery();
+
+                }
+                
+            });
+
+        })
+
+  }
+
+  
 
   function updateEmp() {
 
   }
-
