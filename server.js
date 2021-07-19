@@ -203,7 +203,7 @@ function runQuery () {
   }
 
   function viewEmp() {
-    const query = 'SELECT first_name,last_name FROM employee';
+    const query = 'SELECT first_name,last_name, employee_id FROM employee';
     connection.query(query, (err, res) => {
 
       if (err) throw (err);
@@ -220,18 +220,20 @@ function runQuery () {
             console.log(
             `============================================`
             );
-          res.forEach(({ first_name, last_name}) => {
+          res.forEach(({ first_name, last_name, employee_id}) => {
           console.log(
-                `# First Name: ${first_name}    Last Name: ${last_name}`
+                `# First Name: ${first_name}    Last Name: ${last_name}  ID: ${employee_id}`
                 );
             });
-    
+            
             console.log(
                 `============================================`
                 );
                 console.log(
                     `============================================`
                 );
+
+            
       }
       
         
@@ -373,8 +375,43 @@ function runQuery () {
 
   }
 
-  
-
   function updateEmp() {
+    inquirer.prompt([
+        {
+            name: "employee",
+            type: "input",
+            message: "What is the employee's ID?",
+        },
+        {
+            name: "role",
+            type: "input",
+            message: "Each role has an ID, what is the Id of the job the employee will now have?"
+            
+        },
+        
 
+    ]).then((answer) => {
+
+     var query = `UPDATE employee SET job_id = ? WHERE employee_id = ?`
+      // when finished prompting, insert a new item into the db with that info
+      connection.query(query,
+        [ answer.role_Id,  
+          answer.employee_Id
+        ],
+        function (err, res) {
+          if (err) {
+              throw err;
+          } else {
+              console.table(res);
+              viewRole();
+
+          }
+
+          
+          
+        });
+
+        runQuery();
+
+    })
   }
