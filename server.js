@@ -322,7 +322,8 @@ function runQuery () {
                 
             });
 
-        })
+        });
+        runQuery();
 
   }
 
@@ -371,7 +372,8 @@ function runQuery () {
                 
             });
 
-        })
+        });
+        runQuery();
 
   }
 
